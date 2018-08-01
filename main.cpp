@@ -8,6 +8,7 @@
 #include <streambuf>
 #include <chrono>
 #include <inttypes.h>
+#include <algorithm>
 #include <cpp_redis/cpp_redis>
 
 #include "RedisTest.h"
@@ -17,8 +18,6 @@
 #include "RawStreamRead.h"
 
 const int NUM_ENTRIES = 100000;
-
-
 
 int main(int argc, char *argv[])
 {
@@ -41,15 +40,26 @@ int main(int argc, char *argv[])
             std::cout << "giving up for " << host << ":" << port << std::endl;
         }
     }, 0, 10, 100);
-    //auto loginReply = client.auth("foobared");
+
+    auto loginReply = client.auth("foobared");
     auto createKey = client.set("ct", "0");
     client.sync_commit();
 
-    std::unique_ptr<RedisTest> pTest;
-    //pTest = std::make_unique<RawStreamWrite>();
-    //pTest = std::make_unique<LuaSetWrite>();
-    //pTest = std::make_unique<LuaStreamWrite>();
-    pTest = std::make_unique<RawStreamRead>();
+    std::unique_ptr<RedisTest> pTest = std::make_unique<RawStreamWrite>();
+    if (argc >= 2)
+    {
+        std::string cmd(argv[1]);
+        std::transform(cmd.begin(),cmd.end(), cmd.begin(), ::tolower);
+        if (cmd == "rawstreamwrite") {
+            pTest = std::make_unique<RawStreamWrite>();
+        } else if (cmd == "luasetwrite") {
+            pTest = std::make_unique<LuaSetWrite>();
+        } else if (cmd == "luastreamwrite") {
+            pTest = std::make_unique<LuaStreamWrite>();
+        } else if (cmd == "rawstreamread") {
+            pTest = std::make_unique<RawStreamRead>();
+        }
+    }
 
     pTest->Setup( &client );
     for (int x = 0; x < 20; x++)

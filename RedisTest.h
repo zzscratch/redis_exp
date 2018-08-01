@@ -8,8 +8,9 @@
 #include <iostream>
 #include <sstream>
 #include <streambuf>
-#include <cpp_redis/cpp_redis>
 #include <fstream>
+#include <cpp_redis/cpp_redis>
+
 
 class RedisTest
 {

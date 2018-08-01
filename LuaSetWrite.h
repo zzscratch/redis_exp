@@ -14,7 +14,6 @@ public:
     virtual void Execute(cpp_redis::client * pClient, std::atomic<int> * pCounter) override;
     virtual void Cleanup(cpp_redis::client * pClient) override;
 
-
 private:
     std::string sha;
 };

@@ -9,14 +9,10 @@
 
 class RawStreamWrite : public RedisTest
 {
-    void Setup(cpp_redis::client *pClient) override;
-
-    void Execute(cpp_redis::client *pClient, std::atomic<int> *pCounter) override;
-
-    void Cleanup(cpp_redis::client *pClient) override;
-
 public:
-
+    void Setup(cpp_redis::client *pClient) override;
+    void Execute(cpp_redis::client *pClient, std::atomic<int> *pCounter) override;
+    void Cleanup(cpp_redis::client *pClient) override;
 };
 
 #endif //REDIS_TEST_RAWSTREAMWRITE_H
