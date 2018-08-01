@@ -45,7 +45,11 @@ int main(int argc, char *argv[])
     auto createKey = client.set("ct", "0");
     client.sync_commit();
 
+
+    // default run parameters
     std::unique_ptr<RedisTest> pTest = std::make_unique<RawStreamWrite>();
+    int testIterations = 20;
+
     if (argc >= 2)
     {
         std::string cmd(argv[1]);
@@ -58,11 +62,20 @@ int main(int argc, char *argv[])
             pTest = std::make_unique<LuaStreamWrite>();
         } else if (cmd == "rawstreamread") {
             pTest = std::make_unique<RawStreamRead>();
+        } else {
+            std::cout << "Unknown cmd" << std::endl;
+            exit(-1);
         }
+    }
+    if (argc >= 3)
+    {
+        int tmp = std::atoi(argv[2]);
+        if (tmp > 0)
+            testIterations = tmp;
     }
 
     pTest->Setup( &client );
-    for (int x = 0; x < 20; x++)
+    for (int x = 0; x < testIterations; x++)
     {
         std::atomic<int> counter(NUM_ENTRIES);
 

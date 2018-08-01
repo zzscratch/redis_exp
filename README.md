@@ -1,0 +1,1 @@
+Throwaway project for quick and dirty tests of Redis stuff.
