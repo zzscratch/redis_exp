@@ -1,7 +1,3 @@
-//
-// Created by chadb on 7/31/18.
-//
-
 #include "RawStreamWrite.h"
 
 void RawStreamWrite::Setup(cpp_redis::client *pClient)

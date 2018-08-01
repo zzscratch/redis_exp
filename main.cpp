@@ -2,20 +2,16 @@
 #include <Winsock2.h>
 #endif
 
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <streambuf>
-#include <chrono>
-#include <inttypes.h>
-#include <algorithm>
-#include <cpp_redis/cpp_redis>
-
 #include "RedisTest.h"
 #include "RawStreamWrite.h"
 #include "LuaSetWrite.h"
 #include "LuaStreamWrite.h"
 #include "RawStreamRead.h"
+
+#include <chrono>
+#include <inttypes.h>
+#include <algorithm>
+#include <cpp_redis/cpp_redis>
 
 const int NUM_ENTRIES = 100000;
 

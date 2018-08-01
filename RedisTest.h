@@ -9,6 +9,7 @@
 #include <sstream>
 #include <streambuf>
 #include <fstream>
+#include <atomic>
 #include <cpp_redis/cpp_redis>
 
 

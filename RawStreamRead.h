@@ -1,6 +1,3 @@
-//
-// Created by chadb on 7/31/18.
-//
 
 #ifndef REDIS_TEST_LUASTREAMREAD_H
 #define REDIS_TEST_LUASTREAMREAD_H

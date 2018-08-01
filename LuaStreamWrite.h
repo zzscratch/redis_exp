@@ -1,7 +1,3 @@
-//
-// Created by chadb on 7/31/18.
-//
-
 #ifndef REDIS_TEST_LUASTREAMWRITE_H
 #define REDIS_TEST_LUASTREAMWRITE_H
 
