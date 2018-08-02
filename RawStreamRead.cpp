@@ -1,7 +1,3 @@
-//
-// Created by chadb on 7/31/18.
-//
-
 #include "RawStreamRead.h"
 
 void RawStreamRead::Setup(cpp_redis::client *pClient)
@@ -27,7 +23,7 @@ void RawStreamRead::Reset()
 
 void RawStreamRead::Cleanup(cpp_redis::client *pClient)
 {
-    std::cout << "Staring Raw XRead read test" << std::endl;
+    std::cout << "Finished Raw XRead read test" << std::endl;
 }
 
 void RawStreamRead::Helper(cpp_redis::client *pClient, std::atomic<int> *pCounter, std::string id)

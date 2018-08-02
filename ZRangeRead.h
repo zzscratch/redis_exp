@@ -1,10 +1,10 @@
 
-#ifndef REDIS_TEST_RAWSTREAMREAD_H
-#define REDIS_TEST_RAWSTREAMREAD_H
+#ifndef REDIS_TEST_ZRANGEREAD_H
+#define REDIS_TEST_ZRANGEREAD_H
 
 #include "RedisTest.h"
 
-class RawStreamRead : public RedisTest
+class ZRangeRead : public RedisTest
 {
 public:
     virtual void Setup(cpp_redis::client *pClient) override;
@@ -14,7 +14,7 @@ public:
 
 private:
     bool first = false;
-    void Helper(cpp_redis::client *pClient, std::atomic<int> *pCounter, std::string id);
+    void Helper(cpp_redis::client *pClient, std::atomic<int> *pCounter, int id);
 };
 
-#endif //REDIS_TEST_RAWSTREAMREAD_H
+#endif //REDIS_TEST_ZRANGEREAD_H

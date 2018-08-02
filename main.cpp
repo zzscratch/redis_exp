@@ -7,6 +7,7 @@
 #include "LuaSetWrite.h"
 #include "LuaStreamWrite.h"
 #include "RawStreamRead.h"
+#include "ZRangeRead.h"
 
 #include <chrono>
 #include <inttypes.h>
@@ -37,13 +38,12 @@ int main(int argc, char *argv[])
         }
     }, 0, 10, 100);
 
+    // login with default password
     auto loginReply = client.auth("foobared");
-    auto createKey = client.set("ct", "0");
     client.sync_commit();
 
-
     // default run parameters
-    std::unique_ptr<RedisTest> pTest = std::make_unique<RawStreamWrite>();
+    std::unique_ptr<RedisTest> pTest = std::make_unique<LuaSetWrite>();
     int testIterations = 20;
 
     if (argc >= 2)
@@ -58,6 +58,8 @@ int main(int argc, char *argv[])
             pTest = std::make_unique<LuaStreamWrite>();
         } else if (cmd == "rawstreamread") {
             pTest = std::make_unique<RawStreamRead>();
+        } else if (cmd == "zrangeread") {
+            pTest = std::make_unique<ZRangeRead>();
         } else {
             std::cout << "Unknown cmd" << std::endl;
             exit(-1);

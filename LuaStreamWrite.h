@@ -6,9 +6,9 @@
 class LuaStreamWrite : public RedisTest
 {
 public:
-    void Setup(cpp_redis::client *pClient) override;
-    void Execute(cpp_redis::client *pClient, std::atomic<int> *pCounter) override;
-    void Cleanup(cpp_redis::client *pClient) override;
+    virtual void Setup(cpp_redis::client *pClient) override;
+    virtual void Execute(cpp_redis::client *pClient, std::atomic<int> *pCounter) override;
+    virtual void Cleanup(cpp_redis::client *pClient) override;
 
 private:
     std::string sha;
