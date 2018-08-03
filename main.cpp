@@ -16,6 +16,16 @@
 
 const int NUM_ENTRIES = 100000;
 
+void usage()
+{
+    std::cout << "redis_exp cmd iterations runs" << std::endl;
+    std::cout << "luasetwrite" << std::endl;
+    std::cout << "zrangeread" << std::endl;
+    std::cout << "rawstreamwrite" << std::endl;
+    std::cout << "rawstreamread" << std::endl;
+    std::cout << "luastreamwrite" << std::endl;
+}
+
 int main(int argc, char *argv[])
 {
 #ifdef _WIN32
@@ -50,7 +60,10 @@ int main(int argc, char *argv[])
     {
         std::string cmd(argv[1]);
         std::transform(cmd.begin(),cmd.end(), cmd.begin(), ::tolower);
-        if (cmd == "rawstreamwrite") {
+        if (cmd == "help") {
+            usage();
+            exit(0);
+        } else if (cmd == "rawstreamwrite") {
             pTest = std::make_unique<RawStreamWrite>();
         } else if (cmd == "luasetwrite") {
             pTest = std::make_unique<LuaSetWrite>();
