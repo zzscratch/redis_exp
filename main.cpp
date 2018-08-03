@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
     client.sync_commit();
 
     // default run parameters
-    std::unique_ptr<RedisTest> pTest = std::make_unique<LuaSetWrite>();
+    std::unique_ptr<RedisTest> pTest;
     int testIterations = 20;
 
     if (argc >= 2)
@@ -71,30 +71,54 @@ int main(int argc, char *argv[])
         if (tmp > 0)
             testIterations = tmp;
     }
+    int reruns = 1;
+    if (argc >= 4)
+    {
+        int tmp = std::atoi(argv[3]);
+        if (tmp > 0)
+            reruns = tmp;
+    }
+
+    if (pTest == nullptr) {
+        std::cout << "No command specified" << std::endl;
+        exit(-1);
+    }
+
+    double totalSecs = 0.0;
+    double totalCount = 0.0;
 
     pTest->Setup( &client );
-    for (int x = 0; x < testIterations; x++)
+    for (int y = 0; y < reruns; y++)
     {
-        std::atomic<int> counter(NUM_ENTRIES);
-
-        auto start = std::chrono::high_resolution_clock::now();
-
-        for (int i = 0; i < NUM_ENTRIES; i++)
+        for (int x = 0; x < testIterations; x++)
         {
-            pTest->Execute(&client,&counter);
+            std::atomic<int> counter(NUM_ENTRIES);
+
+            auto start = std::chrono::high_resolution_clock::now();
+
+            for (int i = 0; i < NUM_ENTRIES; i++)
+            {
+                pTest->Execute(&client,&counter);
+            }
+            while (counter > 0)
+                ;
+
+            auto end = std::chrono::high_resolution_clock::now();
+            int64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
+            double secs = ms / 1000.0;
+            double perSec = NUM_ENTRIES / (double) secs;
+
+            totalSecs += secs;
+            totalCount += NUM_ENTRIES;
+
+            printf("Took %" PRId64 "ms -- %f logs per second\n", ms, perSec);
+
+            pTest->Reset();
         }
-        while (counter > 0)
-            ;
-
-        auto end = std::chrono::high_resolution_clock::now();
-        int64_t ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
-        double secs = ms / 1000.0;
-
-        printf("Took %" PRId64 "ms -- %f logs per second\n", ms, NUM_ENTRIES / (double) secs);
-
-        pTest->Reset();
     }
     pTest->Cleanup(&client);
+
+    printf("Avg %f logs per second\n", totalCount / totalSecs);
 
     client.disconnect();
     #ifdef _WIN32
