@@ -48,6 +48,9 @@ int main(int argc, char *argv[])
         }
     }, 0, 10, 100);
 
+    // random is random-ish
+    std::srand(std::time(nullptr));
+
     // login with default password
     auto loginReply = client.auth("foobared");
     client.sync_commit();
