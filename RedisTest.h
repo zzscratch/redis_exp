@@ -10,6 +10,7 @@
 #include <streambuf>
 #include <fstream>
 #include <atomic>
+#include <cassert>
 #include <cpp_redis/cpp_redis>
 
 
@@ -32,6 +33,15 @@ public:
 
     virtual std::string generateRandomData()
     {
+#if 0
+        unsigned char raw[] = { 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2 };
+        std::string tmp( &raw[0], &raw[sizeof(raw)] );
+        int len = tmp.size();
+        const char * data = tmp.data();
+        assert(len == sizeof(raw));
+        assert(data[11] == 2);
+        return tmp;
+#else
         std::ostringstream tmp;
         tmp << "{\"sid\":655234, \"pid\":";
         tmp << std::rand();
@@ -39,6 +49,7 @@ public:
         tmp << std::rand();
         tmp << ", \"type\":1, \"data\":\"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}";
         return tmp.str();
+#endif
     }
 };
 
